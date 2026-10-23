@@ -110,6 +110,9 @@ class BuildProfileTests(unittest.TestCase):
             filename = f"{project.stem}.dll"
         marker = f"{self.active_profile.stem}:{project.name}".encode()
         (output / filename).write_bytes(marker)
+        if project.name == "Probe.csproj":
+            (output / 'Probe.runtimeconfig.json').write_bytes(marker + b':runtimeconfig')
+            (output / 'Probe.deps.json').write_bytes(marker + b':deps')
         self.dotnet_invocations.append(command)
 
     def build_profile(self, profile):
@@ -163,6 +166,8 @@ class BuildProfileTests(unittest.TestCase):
         self.assertEqual(final_a["QuietHomeA.dll"], b"profile-a:Home.csproj")
         self.assertEqual(final_a["QuickLaunch.dll"], b"profile-a:QuickLaunch.csproj")
         self.assertEqual(final_a["Probe.dll"], b"profile-a:Probe.csproj")
+        self.assertEqual(final_a["Probe.runtimeconfig.json"], b"profile-a:Probe.csproj:runtimeconfig")
+        self.assertEqual(final_a["Probe.deps.json"], b"profile-a:Probe.csproj:deps")
         native_config = json.loads(final_a["quiet-home/launcher.json"])
         self.assertEqual(native_config["inputs"], [{"id": 14, "label": "Input 14"}])
         self.assertEqual(native_config["viewer_app"], "org.tizen.tv-viewer")

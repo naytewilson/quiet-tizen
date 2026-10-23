@@ -35,6 +35,18 @@ class CliGateTests(unittest.TestCase):
                 tv.main()
             client.assert_not_called()
 
+    def test_net6_payloads_reject_unqualified_profile_runtime_before_contact(self):
+        args=['tv.py','--host','192.0.2.50','--profile','fixture.json',
+              '--acknowledge-temporary-root','root-check']
+        for runtime in ('', '3.1.32', '7.0.1', 'unknown'):
+            with self.subTest(runtime=runtime), patch('sys.argv',args), \
+                    patch('tv.load_profile', return_value={**tv.PROFILE, 'runtime':runtime}), \
+                    patch('tv.SdbClient') as client, patch('tv.find_sdb') as find:
+                with self.assertRaisesRegex(ValueError, 'net6.0 payloads'):
+                    tv.main()
+                client.assert_not_called()
+                find.assert_not_called()
+
     def test_operation_draft_is_local_and_grants_no_authority(self):
         args=['tv.py','--host','192.0.2.50','--profile',str(ROOT/'profiles/un75u8000ffxza-1300.9.json'),
               '--describe-operation','exec','--command','printf reviewed']

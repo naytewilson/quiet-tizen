@@ -1,4 +1,5 @@
 import base64
+import asyncio
 import hashlib
 import os
 from pathlib import Path
@@ -18,6 +19,18 @@ import tv
 
 
 class ScriptTransportTests(unittest.TestCase):
+    def test_observed_runtime_mismatch_stops_before_staging_or_listener(self):
+        from samsung_tv_root import archive_root
+        with patch.object(archive_root, 'find_sdb'), patch.object(archive_root, 'SdbClient'), \
+                patch.object(archive_root, '_check_target', return_value=SimpleNamespace(runtime='3.1')), \
+                patch.object(archive_root, '_stage') as stage, \
+                patch.object(archive_root, 'RootAgentServer') as server:
+            with self.assertRaisesRegex(archive_root.ArchiveRootError, 'no payload was staged'):
+                asyncio.run(archive_root.probe('192.0.2.50', callback_host='192.0.2.51',
+                                              required_runtime='6.0'))
+            stage.assert_not_called()
+            server.assert_not_called()
+
     def execute(self, script, args=(), path=None, shell=('sh',)):
         with tempfile.TemporaryDirectory() as scratch:
             env = {**os.environ, 'TMPDIR': scratch}

@@ -2,7 +2,7 @@
 
 **OFFLINE_ONLY. No TV operation or hardware qualification occurred.** These
 checks qualify the open-source access payloads and catalog/configuration
-logic. They do not compile the NUI Home launcher or establish a working root
+logic, plus compilation of the standalone Probe. They do not compile the NUI Home launcher or establish a working root
 route, private API, ABI, host container, HDMI mapping or runtime on a DU7200.
 
 The first native run used commit
@@ -48,6 +48,36 @@ Initial artifact SHA-256 values:
 d29ccb9b7b71573a6782ddbcd5badf42c53de1a9ed3d00ae0f78c08be78ecb1d  SamsungTvArchiveRoot.dll
 f3175502c90cdfdcffee0d78eca56de1d9e5f66185e9a5362be87c6b9b3e3fde  SamsungTvRootAgent.dll
 9832160a1cbfbd358a1e7a4dfd546722ae54d86420b9059a2baf96054a6c167a  CatalogTests.dll
+```
+
+The final review found that standalone Probe's runtime/dependency sidecars
+were omitted from its package and that the .NET 6 wrapper did not explicitly
+reject a 3.1-only runtime route. The package now includes `Probe.dll`,
+`Probe.runtimeconfig.json` and `Probe.deps.json`; A-B-A regression checks
+cover all three. The wrapper rejects non-6.0 profile runtimes before contact,
+and the vendored probe independently rejects a mismatching observed route
+before callback-listener creation or payload staging. New regressions bring
+the Python suite to **110 passing tests**.
+
+`dotnet build launcher/probe/Probe.csproj -c Release` with isolated output
+and intermediate paths succeeded with zero warnings/errors. Invoking the
+resulting DLL with adjacent sidecars on Linux reached managed `Main`, then
+exited 1 with `System.DllNotFoundException` for unavailable Samsung libraries.
+That expected loader smoke result does not establish native functionality.
+The actual target host and private entry points remain untested.
+
+An isolated `net6.0` library project imported the real
+`launcher/src/QuietHomeContainer.targets` with synthetic safe app/root/viewer/
+settings values. Real MSBuild generation and C# compilation succeeded with
+zero warnings/errors, and the generated source contained those five exact
+constants. This checks the container-code generation target without Samsung
+references. It does not compile Home or QuickLaunch; their full compilation
+still requires the target's matching private framework references.
+
+```text
+13e781d4e1f13494233e000124102caad8c9a5bb41bc244517f3bdcaea5ad730  Probe.dll
+aeb46a15366e38511c192ccf65312442c64e8753b3c16fd2ca0b4cb34a5c59f3  Probe.runtimeconfig.json
+db1c85d2cedb925e342a768839caf805dec898e4776b879f0c7136ae645dc9ad  Probe.deps.json
 ```
 
 GitHub's fork Actions permission readback was `enabled=true`, but its

@@ -240,7 +240,8 @@ def run_build(target, dotnet, framework, profile=None):
             entry_dll = launcher["dll"]
             shutil.copyfile(build_root / "Home" / entry_dll, staging / entry_dll)
             shutil.copyfile(build_root / "QuickLaunch" / "QuickLaunch.dll", staging / "QuickLaunch.dll")
-            shutil.copyfile(build_root / "Probe" / "Probe.dll", staging / "Probe.dll")
+            for name in ("Probe.dll", "Probe.runtimeconfig.json", "Probe.deps.json"):
+                shutil.copyfile(build_root / "Probe" / name, staging / name)
             assets = staging / "quiet-home"
             shutil.copytree(ROOT / "launcher/assets", assets)
             local_catalog = ROOT / "launcher/assets/apps.local.json"

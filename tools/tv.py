@@ -232,11 +232,12 @@ def main():
         raise ValueError('Select an explicit exact profile; run read-only doctor first.')
     if args.action not in ('doctor','inspect') and not args.acknowledge_temporary_root and not args.describe_operation:
         raise ValueError('This operation invokes temporary root; explicit acknowledgement is required.')
+    if (args.action not in ('doctor', 'inspect') and not args.describe_operation and
+            not re.fullmatch(r'6\.0\.[0-9]+', profile.get('runtime', ''))):
+        raise ValueError('The shipped net6.0 payloads require an inventoried .NET 6.0 runtime; other runtimes need separately qualified payloads.')
     operation = {'action': args.action}
     command = None
     if args.action == "root-check":
-        if not profile.get('runtime'):
-            raise ValueError('No compatible runtime has been inventoried for this root route.')
         command = 'id; test "$(id -u)" = 0'
     elif args.action == "pull":
         require_capability(profile, 'root_session')
@@ -379,7 +380,8 @@ def run_root(args, model, script, arguments=()):
     token = secrets.token_hex(16)
     command = script_command(script, arguments, token=token)
     result = asyncio.run(probe(args.host, model=model, callback_host=args.callback_host,
-                              payloads=ROOT / '.local/build/payloads', commands=(command,), command_timeout=30))
+                              payloads=ROOT / '.local/build/payloads', required_runtime='6.0',
+                              commands=(command,), command_timeout=30))
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S.%fZ")
     log = ROOT / ".local/sessions" / f"{stamp}.json"
     save_private(log, (json.dumps(result, indent=2) + "\n").encode())

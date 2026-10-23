@@ -47,12 +47,16 @@ The original UI uses HDMI 2 as the wide PlayStation 5 card, HDMI 3 as the
 Switch card, and HDMI 1 as the third card. Source IDs 14, 15 and 13 were observed
 on the tested TV. They are example wiring, not auto-discovery.
 
-Upload and run Probe to inspect sources and the current main-operation handler:
-
-```sh
-tv push .local/build/Probe/Probe.dll Probe.dll
-tv exec --command '/usr/bin/dotnet /home/owner/share/tmp/sdk_tools/quiet-tizen/Probe.dll'
-```
+The profile package contains `Probe.dll`, `Probe.runtimeconfig.json` and
+`Probe.deps.json`. Its build output is
+`.local/build/<exact-profile-key>/Probe/`, not the old shared Probe path.
+Running it is a separate, reviewed staging operation: bind all three files,
+their hashes, the exact destination and an inverse in the private deployment
+plan before upload. The sidecars must remain beside the DLL when using the
+standard `dotnet Probe.dll` host. Samsung's custom host still needs actual
+runtime qualification. The fixed read-only `doctor` and `inspect` do not
+stage or execute Probe. Retain a separately authorized capture privately;
+its opaque `sources=` output still needs physical input mapping validation.
 
 Configure the verified `launcher_config.inputs`, `default_source`,
 `viewer_app`, `native_settings_app`, `settings` and app-ID allow-list in the
