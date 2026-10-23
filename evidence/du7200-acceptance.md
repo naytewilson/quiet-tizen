@@ -14,9 +14,13 @@ The final pre-publication offline regression command ran **108 tests, all
 passed, zero failures or skips** on the source tree. This includes real POSIX
 and BusyBox shell fixtures, synthetic SQLite round trips/drift checks,
 first-capture/symlink/partial-failure cases, exact profile A–B–A package tests,
-read-only artifact metadata and CLI integration. Native payload/catalog CI
-is separately reported against the published exact SHA. The full target NUI
-build is not covered by those checks.
+read-only artifact metadata and CLI integration. The two open-source access
+payloads subsequently compiled with zero warnings/errors using an isolated
+Microsoft .NET SDK 6.0.428; the .NET catalog, launcher configuration and
+navigation suite passed. Commands, download hash, artifact hashes and limits
+are in `du7200-native-source-checks.md`. The full target NUI build is not
+covered by those checks. GitHub CI did not run: the fork reported zero
+registered workflows despite Actions permissions being enabled.
 
 | Check | Expected | Observed / verdict |
 |---|---|---|
@@ -27,7 +31,7 @@ build is not covered by those checks.
 | Consistent backup / inverse | New immutable `.backup`, quick_check, full hash readback, exact inverses and drift guards | Synthetic SQLite, shell and partial-failure fixtures pass. Actual-firmware BACKUP_VERIFIED and ROLLBACK_REHEARSED are absent. |
 | Native settings recovery | Custom controls cannot consume native recovery key | Only More can be routed to custom settings; native SysMenu is preserved and guarded against drift. Runtime recovery is untested. |
 | Native AV / Wi-Fi remote | All baseline, post-install and restored stages pass without re-pairing | All 23 rows are NOT_TESTED. Current checker returns NO-GO. Picture/audio/HDMI latency and fidelity are UNMEASURED. |
-| Native .NET | Payload/catalog tests and target NUI build | Existing CI will test open-source payload/catalog code. Matching DU7200 private NUI references and on-device compilation/runtime remain unavailable. |
+| Native .NET | Payload/catalog tests and target NUI build | Both open-source payload builds and the native catalog/configuration/navigation suite passed locally with .NET SDK 6.0.428. GitHub CI did not run. Matching DU7200 private NUI references and on-device compilation/runtime remain unavailable. |
 
 The source CLI separates fixed first-backup capture from installer authority.
 Capture is limited to the project-owned backup parent if absent and one new
