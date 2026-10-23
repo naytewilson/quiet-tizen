@@ -318,7 +318,7 @@ internal static class SamsungTvRootAgent
                         throw new InvalidDataException("invalid command length");
                     }
                     string command = Encoding.UTF8.GetString(commandBytes);
-                    CommandResult result = Execute(command, timeout);
+                    CommandResult result = Execute(command, timeout, readableDirectory);
                     WriteAuthenticated(
                         stream,
                         nonce,
@@ -336,7 +336,7 @@ internal static class SamsungTvRootAgent
         }
     }
 
-    private static CommandResult Execute(string command, int timeout)
+    private static CommandResult Execute(string command, int timeout, string sessionDirectory)
     {
         ProcessStartInfo start = new ProcessStartInfo();
         start.FileName = "/usr/bin/setsid";
@@ -345,6 +345,9 @@ internal static class SamsungTvRootAgent
         start.CreateNoWindow = true;
         start.RedirectStandardOutput = true;
         start.RedirectStandardError = true;
+        // Session scratch is covered by the host's verified finally cleanup,
+        // including commands whose process group must be killed on timeout.
+        start.EnvironmentVariables["QUIET_TIZEN_SESSION_DIR"] = sessionDirectory;
 
         using (Process process = Process.Start(start))
         {

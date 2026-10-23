@@ -3,6 +3,7 @@
   <OutputType>Exe</OutputType><TargetFramework>net6.0</TargetFramework><AssemblyName>QuickLaunch</AssemblyName>
   <UseAppHost>false</UseAppHost><EnableDefaultCompileItems>false</EnableDefaultCompileItems><DebugType>none</DebugType><ImplicitUsings>disable</ImplicitUsings><Nullable>disable</Nullable>
  </PropertyGroup>
+ <Import Project="QuietHomeContainer.targets" />
  <ItemGroup><Compile Include="QuickLaunch.cs" /></ItemGroup>
  <ItemGroup>
   <Reference Include="Tizen.NUI"><HintPath>$(TV_FRAMEWORK_DIR)/Tizen.NUI.dll</HintPath><Private>false</Private></Reference>

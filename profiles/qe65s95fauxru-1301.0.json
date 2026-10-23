@@ -1,0 +1,21 @@
+{
+  "profile_version": 1,
+  "model": "QE65S95FAUXRU",
+  "firmware": "T-RSMFDEUC-0090-1301.0",
+  "os": "Tizen 9.0",
+  "kernel": "Linux 5.4.261 aarch64",
+  "runtime": "6.0.9",
+  "launcher": {
+    "app_id": "com.samsung.tv.adplayer",
+    "dll": "AdPlayer.dll"
+  },
+  "groups": {},
+  "capabilities": {},
+  "evidence": {
+    "reported_identity": {
+      "status": "INFERRED",
+      "source": "Upstream PR 3 head 427070a4808d03be494f7542686e5c076791fb40; contributor report, not independently device-verified here"
+    }
+  },
+  "notes": "Inventory-only candidate retained from PR 3. No root, launcher build, mutation or cleanup qualification is granted. This is not a DU7200 profile."
+}

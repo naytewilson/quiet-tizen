@@ -1,5 +1,10 @@
 # Build and install Quiet Home
 
+The hardware operations below describe the original U8000F case study. The
+DU7200 branch uses [exact-profile deployment and recovery gates](du7200-install.md)
+and makes no current DU7200 runtime/host claim. Original container, UID, labels,
+HDMI integers and APIs below must never be copied onto an unqualified TV.
+
 Quiet Home is a native NUI/.NET application, with Home/startup and remote-key
 routing adjusted to make it act as the launcher. It does not replace the
 kernel or the whole Tizen shell. Samsung's settings, app framework and media
@@ -28,11 +33,12 @@ desktop/mobile SDK version just because it has a file with the same name.
 Do not commit the resulting assemblies.
 
 ```sh
-python3 tools/build.py launcher --framework .local/tv-framework
+python3 tools/build.py launcher --profile profiles/un75u8000ffxza-1300.9.json --framework .local/tv-framework
 ```
 
-This builds `BixbyPromotion.dll`, `QuickLaunch.dll` and `Probe.dll`, then
-assembles `.local/package/`. Public source cards are neutral text placeholders;
+For this exact historical profile this builds `BixbyPromotion.dll`,
+`QuickLaunch.dll` and `Probe.dll`, then assembles a profile-isolated package
+below `.local/package/`. The build prints the exact directory. Public source cards are neutral text placeholders;
 [optional publisher artwork](06-artwork.md) can be fetched before rebuilding.
 
 ## Adapt inputs and apps
@@ -48,9 +54,11 @@ tv push .local/build/Probe/Probe.dll Probe.dll
 tv exec --command '/usr/bin/dotnet /home/owner/share/tmp/sdk_tools/quiet-tizen/Probe.dll'
 ```
 
-Edit labels, source actions, `RefreshSource`, `SourceIndex` and the default
-`lastSource` in `launcher/src/Home.cs` to match the actual devices. The library
-is read from `apps.json`; verify all app IDs against the TV. See
+Configure the verified `launcher_config.inputs`, `default_source`,
+`viewer_app`, `native_settings_app`, `settings` and app-ID allow-list in the
+exact profile. The build packages `launcher.json`; Home validates it before
+using a source, app or optional private setting. The library is read from
+`apps.json`; verify all selected app IDs against the TV. See
 [app configuration](06-artwork.md). Rebuild after source changes.
 
 ## Install without changing Home yet
@@ -60,27 +68,19 @@ Its `BixbyPromotion.dll` is replaced with our assembly, while the package's
 existing identity, metadata and framework integration are retained. This
 replaces Bixby Promotion's function. It is not a store-signed standalone TPK.
 
-Inspect the installed package, its owner/labels, original entry assembly and
-current registry flags first. This release's recipe requires the observed
-owner `201:0`. If the layout differs, stop and adapt the profile.
+That host is historical evidence, not the default for a different model.
+The old install/restore scripts now stop before writes. Use
+`tools/plan_launcher.py` with the exact qualified profile, fresh inventory,
+consistent SQLite snapshot, verified original entry assembly and private
+host evidence. [Current plan inputs and outputs](du7200-install.md) and
+[recovery ordering](du7200-recovery.md) describe the full contract.
 
-```sh
-tv exec --script recipes/snapshot.sh --arg home-01
-tar -czf .local/package.tar.gz -C .local/package .
-tv push .local/package.tar.gz package.tar.gz
-tv exec --script recipes/install-launcher.sh --arg home-01
-```
-
-The recipe backs up the original package before replacing the assembly,
-moves the cached native image out of the execution path, installs resources,
-applies the package's observed SMACK label and requests a manual launch.
-It does not change Home/startup.
-
-The new release recipes are a generalized form of the operations used on the
-original TV. Filesystem steps are not a single atomic transaction. If a step
-fails, inspect the saved state and use recovery; do not rerun by deleting
-the original backup. The snapshot and backup folder is
-`/opt/usr/share/quiet-tizen-backups/home-01`.
+The generated manual-only install/inverse binds exact model, firmware,
+paths, metadata, observed source mappings, installed targets and hashes.
+It refuses existing custom resources or native-image cache whose safe
+invalidation has not been established. It does not stop apps, launch the
+replacement, alter registry flags or assign Home/startup. Do not delete the
+first backup to retry a partial install.
 
 Verify visibly:
 
@@ -101,17 +101,12 @@ handler printed by Probe, `db/appfw/home_appid`, and
 `db/appfw/startup_appid`. They all happened to be `com.samsung.tv.csfs` on the
 case-study device; restoration must use the actual saved values.
 
-Only after the visible verification above:
-
-```sh
-tv exec --command '/usr/bin/dotnet /opt/usr/share/quiet-tizen-backups/home-01/Probe.dll set-home com.samsung.tv.bixby-promotion'
-tv exec --command 'vconftool set -f -t string db/appfw/home_appid com.samsung.tv.bixby-promotion; vconftool set -f -t string db/appfw/startup_appid com.samsung.tv.bixby-promotion'
-```
-
-Read all three selectors back. Let temporary root cleanup finish, then
-restart with the remote. Check full boot, the Home button, standby/wake
-and return from a streaming app separately. Automatic startup was verified
-on the original TV; an OS update can change routing.
+Home/startup assignment is a separate hardware-qualified phase. The generated
+manual install never assigns these selectors. Prepare a new exact selector
+snapshot, guarded inverse and operation-bound owner deployment decision.
+Read all three selectors back, finish temporary-root cleanup, and test normal
+cold boot, Home, standby/wake and return from apps. Automatic startup on the
+original TV does not establish this behavior for a DU7200 or later firmware.
 
 ## Replace the slow settings/sidebar path
 
@@ -124,34 +119,18 @@ The small QuickLaunch bridge exits on vendor `launch_type=preload` requests.
 For interactive requests it opens Quiet Home's settings page and exits.
 It does not keep a second heavy settings process running.
 
-After quick settings work, take a new snapshot and install the bridge:
+The original QuickLaunch overwrite and dual-key recipe is retired in this
+branch. `tools/plan_settings_bridge.py` generates field-specific SQL and an
+inverse only for an independently qualified More route. It preserves native
+`XF86SysMenu` rows and guards them against drift so Settings does not depend
+on the custom app surviving. It never overwrites QuickLaunch. The native
+source fallback handles synchronous dispatch errors; asynchronous crash
+recovery still needs the physical-device tests and original native key.
 
-```sh
-tv exec --script recipes/snapshot.sh --arg shell-01
-tv exec --script recipes/install-settings-bridge.sh --arg shell-01
-```
-
-This replaces `/opt/usr/apps/com.samsung.tv.quicklaunch/bin/QuickLaunch.dll`
-and updates two `key_filter` rules:
-
-| Rule owner / key | New destination |
-|---|---|
-| `com.samsung.tv.quicklaunch` / `XF86More` | Quiet Home, `quiet_page:settings` |
-| `org.tizen.menu` / `XF86SysMenu` | Quiet Home, `quiet_page:settings` |
-
-The recipe selects semantic keys and checks the saved values. It does not
-copy another TV's row numbers. It notifies
-`memory/appfw/app_context_db_change` after the transaction.
-
-Test both settings buttons, then generate/apply the **`light-shell`** cleanup
-group from the `shell-01` registry snapshot. That disables the native sidebar
-and browser. Keep the QuickLaunch bridge and `org.tizen.menu` enabled.
-
-Retain rollback files and remove only the known staged files after verification:
-
-```sh
-tv exec --command 'rm -f /home/owner/share/tmp/sdk_tools/quiet-tizen/package.tar.gz /home/owner/share/tmp/sdk_tools/quiet-tizen/Probe.dll; rm -rf /home/owner/share/tmp/sdk_tools/quiet-tizen/unpacked'
-```
+Optional cleanup is independent. Building a launcher or generating a settings
+plan does not authorize the historical `light-shell` group. Keep native
+settings, display, audio, inputs, discovery, network remote and pairing paths
+untouched. Remove only plan-named staged files after exact hash readback.
 
 ## Performance choices in the launcher
 

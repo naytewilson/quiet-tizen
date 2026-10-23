@@ -1,5 +1,11 @@
 # Recovery and rollback
 
+The original fixed-container restore recipes now stop before writes. Use the
+exact generated inverse, immutable numbered backup and
+[DU7200 recovery contract](du7200-recovery.md). Historical values below are
+not defaults for another television. No DU7200 rollback has been rehearsed on
+physical hardware by this branch.
+
 Keep the computer's Developer Mode authorization working until the modified
 TV has passed full boot, standby/wake, HDMI, sound and remote tests.
 Retain the first backups privately. Do not factory-reset first: that can

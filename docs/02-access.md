@@ -1,5 +1,10 @@
 # Developer Mode and temporary root
 
+For the DU7200 adaptation, follow [the current guarded workflow](du7200-install.md).
+This page retains the original U8000F route description. Root is a separate
+explicit attempt, never a read-only capability check. No DU7200 root route has
+been qualified by this branch.
+
 ## Prepare the computer
 
 Use Python 3.12+, OpenSSL, Samsung's SDB and the .NET 6 SDK. Install SDB through
@@ -13,13 +18,16 @@ export SDB=/absolute/path/to/tizen-studio/tools/sdb
 export TV_IP=192.0.2.50
 # Replace the example IP above. Read this string on YOUR TV; do not guess it.
 export TV_FIRMWARE='T-KSU2EFAKUC-0090-1300.9'
-tv() { python3 tools/tv.py --host "$TV_IP" --firmware "$TV_FIRMWARE" "$@"; }
+tv() { python3 tools/tv.py --host "$TV_IP" --profile profiles/un75u8000ffxza-1300.9.json --firmware "$TV_FIRMWARE" "$@"; }
 python3 tools/build.py payloads
 ```
 
 `192.0.2.50` is a documentation address, not a real target. The firmware
 argument records what the operator verified on screen. The helper separately
-checks the model reported by SDB and rejects other model/firmware combinations.
+reads firmware through supported SDB where available. A declaration that
+contradicts live firmware is rejected; it cannot override a disagreement.
+Persistent writes require live firmware readback and a qualified private
+deployment plan. Never use this historical model/profile for another TV.
 
 ## Enable Developer Mode on the TV
 
@@ -37,17 +45,20 @@ Guest-network isolation or a VPN can break the return connection.
 "$SDB" connect "$TV_IP:26101"
 "$SDB" devices
 tv doctor
-tv root-check
+# A separate root attempt, only when that exact route has been reviewed:
+# tv --acknowledge-temporary-root root-check
 ```
 
-`doctor` checks the SDB foothold, runtime, file capabilities and tar support.
-It does not obtain root or establish compatibility for every private API.
+`doctor` collects supported, fixed read-only SDB observations. It uses no
+injection, payload staging, root callback or settings writes. If retail firmware
+closes supported SDB shell, fields remain UNKNOWN; doctor does not escalate.
 `root-check` builds on that route, executes `id`, and requires an authenticated
 UID/EUID 0 callback plus successful staging/system-file cleanup.
 
-On this retail firmware, `sdb shell` returning `closed` is expected. The
-upstream tool uses the package-installer foothold and archive launcher instead.
-Do not respond by replacing passwd or Samsung's verification key.
+On the historical retail firmware, supported `sdb shell` could return `closed`.
+The upstream root tool's package-installer foothold and archive launcher are an
+active root attempt; the new doctor does not fall back to that route. Do not
+respond by replacing passwd or Samsung's verification key.
 
 ## What the access route does
 
@@ -83,6 +94,14 @@ reviewed tool; truncated output is never accepted.
 `--arg VALUE` positional arguments. There is a 30-second command budget; keep
 phases short. Logs are private and can contain device details. Do not attach
 raw session JSON to public issues.
+
+These historical `exec`/`push` examples now require global
+`--acknowledge-temporary-root --deployment-plan .local/PLAN.json` and a qualified
+exact profile, plus `--confirm-operation-sha256` matching the separately reviewed
+operation. Privileged `pull` instead requires an exact private artifact manifest
+with expected path, destination, size and hash. The new guards deliberately reject inventory-only profiles.
+Use `--describe-operation` to review local command/script/upload hashes without
+contacting a TV; its `DRAFT_UNAUTHORIZED` output grants no deployment permission.
 
 Use one SDB/root operation at a time. If route detection selects the wrong
 interface, pass `--callback-host COMPUTER_LAN_IP` **before** the subcommand.

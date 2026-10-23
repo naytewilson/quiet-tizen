@@ -1,5 +1,14 @@
 # Provenance and verification scope
 
+The DU7200 adaptation additionally supplies the authenticated agent's exact
+ephemeral staging directory to child commands as `QUIET_TIZEN_SESSION_DIR`.
+Bounded pull scratch stays inside that session so existing host-side finally
+cleanup can remove it after a command timeout/SIGKILL and verify absence.
+Script delivery decodes/hashes in process memory and creates no decoded
+script file. A valid execution sentinel proves execution and status only;
+backups and installed objects still require independent full hash readback.
+No device-side daemon, new root route or persistent service is added.
+
 ## Original device work
 
 The findings were compiled from local inspection, build/deployment records,
