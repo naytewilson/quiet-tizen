@@ -1,0 +1,428 @@
+{
+  "schema": "quiet-tizen.du7200.acceptance.v1",
+  "model": "UN65DU7200BXZA",
+  "firmware": null,
+  "source_status": "OFFLINE_ONLY",
+  "known_regressions": [],
+  "limitations": [
+    "No current device access, firmware readback or baseline hardware test is asserted.",
+    "No native runtime build was run with this TV's private framework references.",
+    "Latency, HDR accuracy and audio fidelity are UNMEASURED."
+  ],
+  "capabilities": [
+    {
+      "id": "picture-4k-upscaling",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "picture-hdr",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "picture-modes-advanced",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "gaming-game-mode-allm",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "gaming-console-input",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "audio-internal-volume-mute",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "audio-modes-sync",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "audio-external-formats",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "hdmi-every-port",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "hdmi-cec-naming",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "hdmi-hotplug",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "hdmi-arc-support",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "bluetooth-audio",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "network-apps-discovery",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "streaming-drm-logins-hdr",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "native-settings-crash-fallback",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "lifecycle-coldboot-restart",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "lifecycle-standby-wake",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "lifecycle-switch-reconnect-crash",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "wifi-remote-navigation-home-back",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "wifi-remote-volume-mute-power",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "wifi-remote-app-input",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    },
+    {
+      "id": "wifi-remote-reconnect-no-repair",
+      "test_method": "Follow docs/du7200-native-av-matrix.md on the actual TV; retain private firmware-bound evidence.",
+      "equipment": "See the per-capability matrix; current availability UNKNOWN.",
+      "recovery": "Restore only this phase from verified original backup, then repeat native baseline.",
+      "baseline": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "post_install": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      },
+      "restored": {
+        "status": "NOT_TESTED",
+        "evidence": null
+      }
+    }
+  ]
+}

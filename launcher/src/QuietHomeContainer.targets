@@ -1,0 +1,13 @@
+<Project>
+ <Target Name="GenerateQuietHomeContainer" BeforeTargets="CoreCompile">
+  <Error Condition="'$(QuietHomeAppId)' == ''" Text="QuietHomeAppId must come from a validated TV profile." />
+  <Error Condition="'$(QuietHomeRoot)' == ''" Text="QuietHomeRoot must come from a validated TV profile." />
+  <Error Condition="'$(QuietHomeResourceRoot)' == ''" Text="QuietHomeResourceRoot must come from a validated TV profile." />
+  <Error Condition="'$(QuietHomeViewerApp)' == ''" Text="QuietHomeViewerApp must come from a validated TV profile." />
+  <Error Condition="'$(QuietHomeNativeSettingsApp)' == ''" Text="QuietHomeNativeSettingsApp must come from a validated TV profile." />
+  <PropertyGroup><QuietHomeContainerSource>$(IntermediateOutputPath)QuietHomeContainer.g.cs</QuietHomeContainerSource></PropertyGroup>
+  <WriteLinesToFile File="$(QuietHomeContainerSource)" Overwrite="true" WriteOnlyWhenDifferent="true"
+   Lines="public static class QuietHomeContainer { public const string AppId=&quot;$(QuietHomeAppId)&quot;%3B public const string Root=&quot;$(QuietHomeRoot)&quot;%3B public const string ResourceRoot=&quot;$(QuietHomeResourceRoot)&quot;%3B public const string ViewerApp=&quot;$(QuietHomeViewerApp)&quot;%3B public const string NativeSettingsApp=&quot;$(QuietHomeNativeSettingsApp)&quot;%3B }" />
+  <ItemGroup><Compile Include="$(QuietHomeContainerSource)" /><FileWrites Include="$(QuietHomeContainerSource)" /></ItemGroup>
+ </Target>
+</Project>

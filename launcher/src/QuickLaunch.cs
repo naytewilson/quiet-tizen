@@ -16,14 +16,23 @@ public sealed class QuickLaunch : NUIApplication {
  protected override void OnAppControlReceived(AppControlReceivedEventArgs e){
   base.OnAppControlReceived(e);string kind;bool preload=e.ReceivedAppControl.ExtraData.TryGet("launch_type",out kind)&&kind=="preload";
   int result=0;
-  if(!preload){IntPtr c;result=app_control_create(out c);if(result==0){try{
-   result=app_control_set_app_id(c,"com.samsung.tv.bixby-promotion");
-   if(result==0)result=app_control_set_operation(c,"http://tizen.org/appcontrol/operation/default");
-   if(result==0)result=app_control_add_extra_data(c,"quiet_page","settings");
-   if(result==0)result=app_control_send_launch_request(c,IntPtr.Zero,IntPtr.Zero);
-  }finally{app_control_destroy(c);}}}
-  try{File.WriteAllText("/tmp/quiet-home-bridge.txt",DateTime.UtcNow.ToString("o")+"\npreload="+preload+"\nresult="+result+"\n");}catch{}
+  bool usedNativeSettings=false;
+  if(!preload){
+   result=Launch(QuietHomeContainer.AppId,"settings");
+   if(result!=0){usedNativeSettings=true;result=Launch(QuietHomeContainer.NativeSettingsApp,null);}
+  }
+  try{File.WriteAllText("/tmp/quiet-home-bridge.txt",DateTime.UtcNow.ToString("o")+"\npreload="+preload+"\nresult="+result+"\nnative_settings_fallback="+usedNativeSettings+"\n");}catch{}
   Exit();
+ }
+ static int Launch(string id,string page){
+  IntPtr c;int result=app_control_create(out c);if(result!=0)return result;
+  try{
+   result=app_control_set_app_id(c,id);
+   if(result==0)result=app_control_set_operation(c,"http://tizen.org/appcontrol/operation/default");
+   if(result==0&&page!=null)result=app_control_add_extra_data(c,"quiet_page",page);
+   if(result==0)result=app_control_send_launch_request(c,IntPtr.Zero,IntPtr.Zero);
+   return result;
+  }finally{app_control_destroy(c);}
  }
  public static void Main(string[] args){using(var app=new QuickLaunch())app.Run(args);}
 }

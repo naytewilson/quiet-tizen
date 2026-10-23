@@ -5,6 +5,47 @@
   "os": "Tizen 9.0",
   "kernel": "Linux 5.4.261 ARMv7",
   "runtime": "6.0.9",
+  "launcher": {
+    "app_id": "com.samsung.tv.bixby-promotion",
+    "dll": "BixbyPromotion.dll",
+    "root": "/opt/usr/apps/com.samsung.tv.bixby-promotion",
+    "uid": 5001,
+    "owner": "201:0",
+    "smack_label": "User::Pkg::com.samsung.tv.bixby-promotion::RO"
+  },
+  "launcher_config": {
+    "inputs": [
+      {"id": 14, "label": "PlayStation 5"},
+      {"id": 15, "label": "Nintendo Switch"},
+      {"id": 13, "label": "HDMI 1"}
+    ],
+    "default_source": 14,
+    "viewer_app": "org.tizen.tv-viewer",
+    "native_settings_app": "org.tizen.menu",
+    "settings": ["brightness", "game-mode", "sleep-timer", "volume", "mute", "advanced", "network", "bluetooth"],
+    "setting_options": {"game-mode": ["0", "1"], "sleep-timer": ["0", "1", "2", "3", "4"]},
+    "apps": ["org.tizen.netflix-app", "com.samsung.tv.cobalt-yt", "org.tizen.primevideo", "5b8c3eb16b.BeamCTVDev", "MCmYXNxgcu.DisneyPlus", "LBUAQX1exg.Hulu", "rJeHak5zRg.Spotify", "com.samsung.tv.aria-video", "3KA0pm7a7V.TubiTV", "CmeyUlnhYY.LunaWebApp", "GHI3a0zMSx.XboxGamePass", "org.volt.apps"]
+  },
+  "capabilities": {
+    "root_session": false,
+    "package_host": false,
+    "launcher_build": true,
+    "rollback_ready": false,
+    "launcher_install": false,
+    "home": false,
+    "settings_bridge": false,
+    "cleanup": false
+  },
+  "evidence": {
+    "launcher_build": {
+      "status": "PROVEN",
+      "scope": "offline",
+      "model": "UN75U8000FFXZA",
+      "firmware": "T-KSU2EFAKUC-0090-1300.9",
+      "source": "Upstream cf518d7a9278dca7990e27756218258e44044a29 source and documented container/configuration; build configuration only, not current device qualification",
+      "observed_at": "2026-10-23T06:00:00Z"
+    }
+  },
   "registry": "/opt/dbspace/.pkgmgr_parser.db",
   "groups": {
     "advertising": {

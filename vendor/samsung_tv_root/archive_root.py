@@ -248,6 +248,7 @@ async def probe(
     command_timeout: float = 45.0,
     commands: tuple[str, ...] = (),
     payloads: Path | None = None,
+    required_runtime: str | None = None,
 ) -> dict[str, object]:
     ipaddress.IPv4Address(tv_host)
     callback = callback_host or route_callback_host(tv_host)
@@ -256,6 +257,8 @@ async def probe(
     ipaddress.IPv4Address(bind)
     client = SdbClient(find_sdb(), tv_host, timeout=sdb_timeout)
     assessment = await asyncio.to_thread(_check_target, client)
+    if required_runtime is not None and assessment.runtime != required_runtime:
+        raise ArchiveRootError('observed runtime route differs from the qualified payload runtime; no payload was staged')
     payloads = payloads or payload_directory(
         "common31" if assessment.runtime == "3.1" else "common"
     )

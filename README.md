@@ -1,5 +1,44 @@
 # Quiet Tizen
 
+## DU7200 adaptation branch: offline candidate
+
+This branch adds guarded source tooling for the owner's **UN65DU7200BXZA**.
+It is **OFFLINE_ONLY**, with **NO-GO for production deployment** until the actual
+TV's current firmware/runtime, recovery path and native AV/Wi-Fi remote matrix
+have been verified. No DU7200 firmware profile is invented from historical data.
+The original U8000F case study below remains historical evidence for that TV.
+
+Start with [DU7200 compatibility](docs/du7200-compatibility.md),
+[installation gates](docs/du7200-install.md),
+[recovery](docs/du7200-recovery.md), and the
+[native AV and existing Wi-Fi remote matrix](docs/du7200-native-av-matrix.md).
+The [machine-readable acceptance record](evidence/du7200-acceptance.json)
+contains untested hardware rows; the release check deliberately returns NO-GO.
+
+`tools/tv.py doctor` now uses supported, explicit-target read-only SDB commands.
+It never calls the archive-root probe, package-name injection, push or reboot.
+Root operations require an explicit exact profile and separate acknowledgement;
+`exec`/`push` additionally require a private operation-bound deployment plan,
+current firmware readback, qualified capability evidence, verified original
+backups, rehearsed rollback, a native AV/remote baseline and explicit owner
+deployment approval. The caller must separately confirm the reviewed operation
+with `--confirm-operation-sha256`; editing a JSON approval field cannot by
+itself invoke a persistent operation. `--confirm-plan-sha256` also binds the
+complete mutation and evidence manifest. A profile or JSON approval field alone is not consent or
+proof that any of those real-world steps occurred.
+
+Privileged `pull` is restricted to a qualified framework reference, numbered
+backup or the exact original entry assembly, bound to a private
+`--artifact-manifest` with model, firmware, path, destination, observed time,
+expected size and full SHA-256. Arbitrary privileged system-file downloads are
+outside this port's access scope. Existing private snapshots are never overwritten.
+
+Launcher/navigation, app/input shortcuts and native settings are independent
+of optional cosmetic or cleanup layers. No network remote service, discovery,
+pairing credentials, firmware, native AV pipeline or streaming data may be
+disabled as a side effect. Optional cleanup requires exact dependency evidence
+and separate group opt-ins. Shipped profiles grant no persistent-write capability.
+
 A practical, agent-readable guide to making a Samsung Tizen TV quieter and
 more useful as an HDMI display.
 
@@ -101,8 +140,13 @@ Install Samsung's SDB separately.
 python3 -m unittest discover -s tests -v
 python3 tools/build.py payloads
 # After obtaining the four private Tizen reference assemblies:
-python3 tools/build.py launcher --framework .local/tv-framework
+python3 tools/build.py launcher --profile profiles/un75u8000ffxza-1300.9.json --framework .local/tv-framework
 ```
+
+The command above is for the historical U8000F configuration, **not DU7200**.
+Launcher build/object/package paths are isolated per exact profile. No Samsung
+framework assembly is included in generated application packages. Actual
+DU7200 private-reference compilation and runtime tests remain required.
 
 GitHub Actions runs the offline tests and builds the open-source access
 payloads and app-catalog tests. The NUI launcher build needs Samsung reference

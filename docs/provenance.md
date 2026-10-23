@@ -1,5 +1,14 @@
 # Provenance and verification scope
 
+The DU7200 adaptation additionally supplies the authenticated agent's exact
+ephemeral staging directory to child commands as `QUIET_TIZEN_SESSION_DIR`.
+Bounded pull scratch stays inside that session so existing host-side finally
+cleanup can remove it after a command timeout/SIGKILL and verify absence.
+Script delivery decodes/hashes in process memory and creates no decoded
+script file. A valid execution sentinel proves execution and status only;
+backups and installed objects still require independent full hash readback.
+No device-side daemon, new root route or persistent service is added.
+
 ## Original device work
 
 The findings were compiled from local inspection, build/deployment records,
@@ -23,11 +32,20 @@ firmware-key tooling and unrelated payloads are not bundled.
 `resources.py` retains upstream profile names, but this toolkit explicitly
 builds and selects only the two common .NET 6 payloads.
 
-The one local change to the copied access code is in `archive_root.py`:
+The original case study's local change to the copied access code was in `archive_root.py`:
 if Samsung's host returns the exact `Unknown option --list-runtimes` error,
 resolve `/usr/share/dotnet.tizen/netcoreapp`, require `libcoreclr.so` and
 `System.Private.CoreLib.dll`, then derive the runtime version from that path.
 Other preflight errors still fail. This fallback was used on the actual TV.
+
+The DU7200 source adaptation additionally supplies the authenticated child
+command's exact session directory from `SamsungTvRootAgent.cs` and adds an
+optional `required_runtime` check in `archive_root.py`, before listener
+creation or payload staging. `tools/tv.py` uses that check for its .NET 6.0
+payloads and rejects unsupported profile runtimes before device contact.
+Other runtime targets require separately qualified builds; a profile string
+does not establish current runtime compatibility. See the source-only
+[native validation checkpoint](../evidence/du7200-native-source-checks.md).
 
 The new `tools/tv.py` wrapper adds explicit model/declared-firmware gating,
 private local storage, bounded checksum-verified file transfer and reviewed

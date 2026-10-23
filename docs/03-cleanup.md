@@ -1,5 +1,14 @@
 # Reversible cleanup
 
+This page preserves the original U8000F case study. In the DU7200 adaptation,
+all shipped cleanup capabilities are disabled. Current planning requires
+`--profile`, `--inventory`, `--snapshot`, selected `--groups`, and a repeated
+`--owner-opt-in` for every selected group. Exact dependency evidence must
+preserve native AV, network remote/pairing, settings, updates and streaming
+data. The old commands below do not grant those qualifications. See the
+[current installation and planning contract](du7200-install.md). No DU7200
+cleanup group has been selected or tested.
+
 Prefer disabling specific components over deleting system packages. A package
 can contain several app IDs; disabling an app record is not the same as
 uninstalling its package. The tested workaround changes three registry fields:

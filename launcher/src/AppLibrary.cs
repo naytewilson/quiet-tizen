@@ -20,14 +20,15 @@ public sealed class LibraryApp
 public static class AppLibrary
 {
  public const int Columns=5, Rows=3, PageSize=Columns*Rows;
- public static List<LibraryApp> Load(string path)
+ public static List<LibraryApp> Load(string path)=>Load(path,null);
+ public static List<LibraryApp> Load(string path,IList<string> configuredIds)
  {
   var apps=JsonSerializer.Deserialize<List<LibraryApp>>(File.ReadAllText(path));
   if(apps==null||apps.Count==0)throw new InvalidDataException("App library is empty.");
   var ids=new HashSet<string>();
   foreach(var app in apps)
   {
-   if(string.IsNullOrWhiteSpace(app.Name)||string.IsNullOrWhiteSpace(app.Id)||!ids.Add(app.Id)
+   if(string.IsNullOrWhiteSpace(app.Name)||!LauncherConfig.IsValidAppId(app.Id)||!ids.Add(app.Id)
       ||string.IsNullOrWhiteSpace(app.Asset)||Path.IsPathRooted(app.Asset)||app.Asset.Contains("..")
       ||app.Width<=0||app.Height<=0)
    throw new InvalidDataException("Invalid app library entry.");
@@ -36,6 +37,13 @@ public static class AppLibrary
       ||crop[0]<0||crop[1]<0||crop[2]<=0||crop[3]<=0
       ||crop[0]+crop[2]>1||crop[1]+crop[3]>1))
     throw new InvalidDataException("Invalid artwork crop.");
+  }
+  if(configuredIds!=null)
+  {
+   var configured=new HashSet<string>(configuredIds,StringComparer.Ordinal);
+   foreach(var id in configured)
+    if(!ids.Contains(id))throw new InvalidDataException("Configured app is missing from the local catalog: "+id);
+   apps=apps.FindAll(app=>configured.Contains(app.Id));
   }
   return apps;
  }
